@@ -19,7 +19,7 @@ python app.py
 python app.py upload --env(dev, stg, prod, cent) --profile=<aws_profile> --region=<aws_region> --fq_secret_key=</secret_directory/secret_name> --secret_value=<secret_value>
 ```
 
-# AWS Authenticationw
+# AWS Authentication
 We follow [boto3 conventions](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html) for AWS authentication
 
 ### Default Usage

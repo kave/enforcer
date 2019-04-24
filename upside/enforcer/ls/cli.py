@@ -1,6 +1,5 @@
 """
-Script to upload secrets to AWS SSM Parameter Store and tag them appropriately
-This script will read your secret value from the clipboard automagically
+Script to list secrets from AWS SSM Parameter Store
 """
 
 import click
