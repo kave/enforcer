@@ -50,7 +50,7 @@ TEST_REQUIRES = [
     'pytest>=3.4,<4.7',
     'pytest-cov~=2.5.1',
     'tox>=2.9.1,<3.13.0',
-    'yapf~=0.21.0',
+    'yapf>=0.21,<0.28',
     'bandit==1.6.1',
 ]
 
