@@ -47,7 +47,7 @@ TEST_REQUIRES = [
     'flake8~=3.5.0',
     'mock~=2.0.0',
     'moto==1.3.1',
-    'pytest~=3.4.0',
+    'pytest>=3.4,<4.7',
     'pytest-cov~=2.5.1',
     'tox~=2.9.1',
     'yapf~=0.21.0',
