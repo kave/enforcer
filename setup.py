@@ -51,7 +51,7 @@ TEST_REQUIRES = [
     'pytest-cov~=2.5.1',
     'tox>=2.9.1,<3.13.0',
     'yapf~=0.21.0',
-    'bandit==1.5.1',
+    'bandit==1.6.1',
 ]
 
 try:
