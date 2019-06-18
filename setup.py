@@ -44,7 +44,7 @@ INSTALL_REQUIRES = [
 ]
 
 TEST_REQUIRES = [
-    'flake8~=3.5.0',
+    'flake8>=3.5,<3.8',
     'mock>=2.0,<3.1',
     'moto==1.3.1',
     'pytest>=3.4,<4.7',
