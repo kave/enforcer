@@ -1,4 +1,4 @@
-python-dotenv~=0.7.1
+python-dotenv~=0.10.3
 boto3==1.9.170
 pyperclip==1.7.0
 click==7.0
