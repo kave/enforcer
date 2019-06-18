@@ -48,7 +48,7 @@ TEST_REQUIRES = [
     'mock>=2.0,<3.1',
     'moto==1.3.8',
     'pytest>=3.4,<4.7',
-    'pytest-cov~=2.5.1',
+    'pytest-cov>=2.5.1,<2.8.0',
     'tox>=2.9.1,<3.13.0',
     'yapf>=0.21,<0.28',
     'bandit==1.6.1',
