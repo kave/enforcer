@@ -36,7 +36,7 @@ class SnykSync(Command):
 
 INSTALL_REQUIRES = [
     'python-dotenv~=0.7.1',
-    'boto3==1.9.134',
+    'boto3==1.9.170',
     'pyperclip==1.7.0',
     'click==7.0',
     'colorama==0.4.1',
