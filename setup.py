@@ -49,7 +49,7 @@ TEST_REQUIRES = [
     'moto==1.3.1',
     'pytest>=3.4,<4.7',
     'pytest-cov~=2.5.1',
-    'tox~=2.9.1',
+    'tox>=2.9.1,<3.13.0',
     'yapf~=0.21.0',
     'bandit==1.5.1',
 ]
