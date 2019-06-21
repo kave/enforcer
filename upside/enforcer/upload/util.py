@@ -12,7 +12,7 @@ def put_parameter(client, secret: Secret, kms_key_id):
     if kms_key_id:
         client.put_parameter(
             Name=secret.key,
-            Description=secret.parent_directory + ' secrets',
+            Description=secret.description,
             Value=secret.value,
             Type='SecureString',
             KeyId=kms_key_id,
@@ -21,7 +21,7 @@ def put_parameter(client, secret: Secret, kms_key_id):
         #  Uses aws default kms if a custom one is not provided. The system automatically populates Key ID with your default KMS key.
         client.put_parameter(
             Name=secret.key,
-            Description=secret.parent_directory + ' secrets',
+            Description=secret.description,
             Value=secret.value,
             Type='SecureString',
             Overwrite=True)

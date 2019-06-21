@@ -26,15 +26,16 @@ def secret_key_pattern_check(ctx, param, value):
 @click.command()
 @click.option('--profile', default=None, help='aws profile')
 @click.option('--region', default=None, help='aws region name')
-@click.option(
-    '--fq_secret_key',
-    prompt='Fully Qualified Secret Key [/secret_directory/secret_name]',
-    callback=secret_key_pattern_check,
-    help='Fully qualified secret e.g /secret_directory/secret_name')
-@click.option('--secret_value', prompt='Copy your secret value to the clipboard then press enter', default='', show_default=False, hide_input=False)
+@click.option('-s',
+              '--fq_secret_key',
+              prompt='Fully Qualified Secret Key [/secret_directory/secret_name]',
+              callback=secret_key_pattern_check,
+              help='Fully qualified secret e.g /secret_directory/secret_name')
+@click.option('-v', '--secret_value', prompt='Copy your secret value to the clipboard then press enter', default='', show_default=False, hide_input=False)
+@click.option('-d', '--description', default='', help='secret description')
 @click.option('-k', '--kms_key_id', default=None, help='alias of the AWS KMS Parameter Store Key used to encrypt secrets')
 @click.option('-f', '--force', flag_value=True, help='skip confirmation prompt')
-def upload(profile, region, fq_secret_key, secret_value, kms_key_id, force):
+def upload(profile, region, fq_secret_key, secret_value, description, kms_key_id, force):
     client = session(profile, region).client('ssm')
 
     if not secret_value:
@@ -48,6 +49,7 @@ def upload(profile, region, fq_secret_key, secret_value, kms_key_id, force):
         kms_key_id = 'alias/{}'.format(kms_key_id)
         print('AWS KMS: ' + Fore.GREEN + kms_key_id)
     print('Secret Key: ' + Fore.GREEN + fq_secret_key)
+    print('Secret Description: ' + Fore.GREEN + description)
     print('Secret Value:')
     print(Fore.GREEN + secret_value + '\n')
     if not force:
@@ -56,5 +58,5 @@ def upload(profile, region, fq_secret_key, secret_value, kms_key_id, force):
         confirm = True
 
     if confirm:
-        upload_secret(client, kms_key_id, Secret(key=fq_secret_key, value=secret_value))
+        upload_secret(client, kms_key_id, Secret(key=fq_secret_key, value=secret_value, description=description))
         print(Fore.GREEN + 'Uploaded successfully!')
