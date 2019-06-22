@@ -1,4 +1,4 @@
-# Enforcer: AWS SSM Parameter Store Management CLI
+# Enforcer-Reload: AWS SSM Parameter Store Management CLI
 [![image](https://img.shields.io/pypi/v/enforcer.svg)](https://pypi.org/project/enforcer)
 -------------------
 
