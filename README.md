@@ -8,16 +8,44 @@ Any secrets greater than the AWS Parameter store value limit 4096 characters wil
 This script will read your secret value from the clipboard automagically
 - [Chunking logic deep dive](CHUNKS.md)
 
+
+# Assumptions
+This tool does not currently support nested directories in Parameter Store. It assumes you are follow the convention of `/secret_dir/secret_name`
+
 # Usage
 `pip install enforcer`
 
-or
+```
+enforcer --help
+```
 
-```
-pip install -r requirements.txt
-python app.py
-python app.py upload --env(dev, stg, prod, cent) --profile=<aws_profile> --region=<aws_region> --fq_secret_key=</secret_directory/secret_name> --secret_value=<secret_value>
-```
+# Interpolation
+- Kubernetes
+    - This tool assumes you are using the default [kubernetes secret template syntax](https://kubernetes.io/docs/concepts/configuration/secret/) 
+    ```
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: mysecret
+    type: Opaque
+    data:
+      username: YWRtaW4=
+      password: MWYyZDFlMmU2N2Rm
+    ```
+    - Values to be interpolated with will signal replacement with `$((value))`
+    ```
+    apiVersion: v1
+    kind: Secret
+    metadata:
+      name: mysecret
+    type: Opaque
+    data:
+      username: $((username))
+      password: $((password))
+    ```
+    - the tool will search for secrets in `/secret_directory/username` & `/secret_directory/password` for values
+    - To sync with kubernetes you would pipeline the output into an apply function
+        - `enforcer interpolate <template_path> --secret_directory <secret_directory> --kubernetes | kubectl apply -`
 
 # AWS Authentication
 We follow [boto3 conventions](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html) for AWS authentication

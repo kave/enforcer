@@ -33,13 +33,14 @@ def upload_secret(client, kms_key_id, secret: Secret):
     try:
         # Check if chunks exist for secret, then secret_chunk_000 supercedes secret for history auditing
         # Handles case when a secrets value reduces < 2 chunks over time
-        store = lookup_existing_chunked_secrets(client, secret)
+        store = check_for_chunks(client, secret)
         if not store:
             put_parameter(client, secret, kms_key_id)
         else:
             upload_chunked_secret(client, secret, store, kms_key_id)
     except exceptions.ClientError as err:
-        if 'length less than or equal to 4096' in err.response['Error']['Message']:
+        # Handles case of a new secret but needs to be chunked
+        if '4096' in err.response['Error']['Message']:
             upload_chunked_secret(client, secret, store, kms_key_id)
         else:
             raise err
@@ -59,7 +60,7 @@ def upload_chunked_secret(client, secret: Secret, store, kms_key_id):
         put_parameter(client, chunked_secret, kms_key_id)
 
 
-def add_existing_chunks_to_secret_store(existing_secrets, store, upload_secret: Secret):
+def add_existing_secrets_to_secret_store(existing_secrets, store, upload_secret: Secret):
     for existing_secret in existing_secrets['Parameters']:
         existing_chunked_secret = Secret(key=existing_secret['Name'], value=existing_secret['Value'])
 
@@ -67,14 +68,14 @@ def add_existing_chunks_to_secret_store(existing_secrets, store, upload_secret: 
             store[existing_chunked_secret.name] = existing_chunked_secret.value
 
 
-def lookup_existing_chunked_secrets(client, secret: Secret):
+def check_for_chunks(client, secret: Secret):
     store = defaultdict(dict)
 
     existing_secrets = client.get_parameters_by_path(
         Path='/' + secret.parent_directory,
         Recursive=True,
         WithDecryption=True)
-    add_existing_chunks_to_secret_store(existing_secrets, store, secret)
+    add_existing_secrets_to_secret_store(existing_secrets, store, secret)
     if len(existing_secrets['Parameters']) and 'NextToken' in existing_secrets:
         # if there are greater than 10 secrets in the directory keep fetching
         while 'NextToken' in existing_secrets:
@@ -83,10 +84,10 @@ def lookup_existing_chunked_secrets(client, secret: Secret):
                 Recursive=True,
                 WithDecryption=True,
                 NextToken=existing_secrets['NextToken'])
-            add_existing_chunks_to_secret_store(existing_secrets, store, secret)
+            add_existing_secrets_to_secret_store(existing_secrets, store, secret)
         else:
             # update store with the last pagination request
-            add_existing_chunks_to_secret_store(existing_secrets, store, secret)
+            add_existing_secrets_to_secret_store(existing_secrets, store, secret)
 
     return store
 

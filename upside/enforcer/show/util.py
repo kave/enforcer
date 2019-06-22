@@ -10,8 +10,6 @@ init(autoreset=True)
 
 # TODO handle chunked secret case
 def get_secret(client, fq_secret_key: str = None, decrypt: bool = False):
-    store = defaultdict(list)
-
     equals_filter = [
         {
             'Key': 'Name',

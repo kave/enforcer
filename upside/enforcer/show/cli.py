@@ -1,5 +1,5 @@
 """
-Script to list secrets from AWS SSM Parameter Store
+Script to display secret information
 """
 
 import click

@@ -14,7 +14,7 @@ class Secret:
     last_modified_user: str
 
     def __init__(self, key: str, value: str = None, tags: list = list, version: str = None, last_modified: datetime = None, last_modified_user: str = None,
-                 description: str = None, encryption_key: str = None):
+                 description: str = '', encryption_key: str = None):
         self.key = key
         self.value = value
         self.tags = tags

@@ -1,6 +1,6 @@
 from upside.enforcer import config
 from upside.enforcer.upload.chunks import chunk_secret_value, adjust_chunk_size
-from upside.enforcer.upload.util import add_existing_chunks_to_secret_store
+from upside.enforcer.upload.util import add_existing_secrets_to_secret_store
 from upside.enforcer.util.secret import Secret
 
 
@@ -78,7 +78,7 @@ def test_add_existing_chunks_to_secret_store():
     for idx, chunk in enumerate(chunks):
         aws_chunked_secrets.append({'Name': '/parent/child' + '_chunk_' + "{:03d}".format(idx), 'Value': chunk})
 
-    add_existing_chunks_to_secret_store({'Parameters': aws_chunked_secrets}, store, secret)
+    add_existing_secrets_to_secret_store({'Parameters': aws_chunked_secrets}, store, secret)
 
     assert len(store) == 6
     for idx, key_value in enumerate(store.items()):
@@ -94,6 +94,6 @@ def test_add_existing_chunks_to_secret_store_wrong_key():
     for idx, chunk in enumerate(chunks):
         aws_chunked_secrets.append({'Name': '/parent/child' + '_chunk_' + "{:03d}".format(idx), 'Value': chunk})
 
-    add_existing_chunks_to_secret_store({'Parameters': aws_chunked_secrets}, store, secret)
+    add_existing_secrets_to_secret_store({'Parameters': aws_chunked_secrets}, store, secret)
 
     assert len(store) == 0
