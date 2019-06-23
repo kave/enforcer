@@ -27,12 +27,6 @@ reloaded --help
 # AWS Authentication
 We follow [boto3 conventions](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html) for AWS authentication
 
-### Default Usage
-[![enforcer-default](https://asciinema.org/a/NiiwxdTfU7tAlktB3TFYw5rIx.svg)](https://asciinema.org/a/NiiwxdTfU7tAlktB3TFYw5rIx)
-
-### Shortcut Usage
-[![enforcer-shorcut](https://asciinema.org/a/W4VjnodWKpO6wDt28QJj3gLVD.svg)](https://asciinema.org/a/W4VjnodWKpO6wDt28QJj3gLVD)
-
 # Pyperclip dependency
 *Not Implemented Error*
 - https://pyperclip.readthedocs.io/en/latest/introduction.html#not-implemented-error
