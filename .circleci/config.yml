@@ -50,4 +50,5 @@ jobs:
       - run:
           name: Deploy to PYPI
           command: |
+            . venv/bin/activate
             python3 -m twine upload dist/* -u ${pypi_username} -p ${pypi_password}

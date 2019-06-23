@@ -1,6 +1,6 @@
 # Enforcer-Reloaded: AWS SSM Parameter Store Management CLI
 ## This time.. Its Personal >:l
-[![image](https://img.shields.io/pypi/v/enforcer.svg)](https://pypi.org/project/enforcer)
+[![image](https://img.shields.io/pypi/v/enforcer-reloaded.svg)](https://pypi.org/project/enforcer-reloaded)
 [![CircleCI](https://circleci.com/gh/kave/enforcer/tree/master.svg?style=svg)](https://circleci.com/gh/kave/enforcer/tree/master)
 -------------------
 
