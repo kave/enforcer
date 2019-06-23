@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict
 
-chunk_regex = re.compile('_chunk_\d*', re.IGNORECASE)
+chunk_regex = re.compile(r'_chunk_\d*', re.IGNORECASE)
 
 
 def update_secret_store(secrets, store, chunks_found):

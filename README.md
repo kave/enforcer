@@ -1,5 +1,7 @@
-# Enforcer-Reload: AWS SSM Parameter Store Management CLI
+# Enforcer-Reloaded: AWS SSM Parameter Store Management CLI
+## This time.. Its Personal >:l
 [![image](https://img.shields.io/pypi/v/enforcer.svg)](https://pypi.org/project/enforcer)
+[![CircleCI](https://circleci.com/gh/kave/enforcer/tree/master.svg?style=svg)](https://circleci.com/gh/kave/enforcer/tree/master)
 -------------------
 
 # Docs
@@ -13,39 +15,14 @@ This script will read your secret value from the clipboard automagically
 This tool does not currently support nested directories in Parameter Store. It assumes you are follow the convention of `/secret_dir/secret_name`
 
 # Usage
-`pip install enforcer`
+`pip install enforcer-reloaded`
 
 ```
-enforcer --help
+reloaded --help
 ```
 
 # Interpolation
-- Kubernetes
-    - This tool assumes you are using the default [kubernetes secret template syntax](https://kubernetes.io/docs/concepts/configuration/secret/) 
-    ```
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: mysecret
-    type: Opaque
-    data:
-      username: YWRtaW4=
-      password: MWYyZDFlMmU2N2Rm
-    ```
-    - Values to be interpolated with will signal replacement with `$((value))`
-    ```
-    apiVersion: v1
-    kind: Secret
-    metadata:
-      name: mysecret
-    type: Opaque
-    data:
-      username: $((username))
-      password: $((password))
-    ```
-    - the tool will search for secrets in `/secret_directory/username` & `/secret_directory/password` for values
-    - To sync with kubernetes you would pipeline the output into an apply function
-        - `enforcer interpolate <template_path> --secret_directory <secret_directory> --kubernetes | kubectl apply -`
+- [Kubernetes](INTERPOLTE.md)
 
 # AWS Authentication
 We follow [boto3 conventions](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html) for AWS authentication

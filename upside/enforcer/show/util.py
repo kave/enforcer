@@ -1,5 +1,3 @@
-from collections import defaultdict
-
 from colorama import init, Fore
 from tabulate import tabulate
 

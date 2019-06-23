@@ -1,0 +1,53 @@
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.7-stretch
+    steps:
+      - checkout
+      - run:
+          name: Install Python deps in a venv
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install tox
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "setup.py" }}
+          paths:
+            - "venv"
+      - run:
+          name: Run tests
+          command: |
+            . venv/bin/activate
+            tox
+  deploy:
+    docker:
+      - image: circleci/python:3.7-stretch
+    steps:
+      - checkout
+      - run:
+          name: Install Twine
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install twine
+      - run:
+          name: Gather deployable files
+          command: |
+             python3 setup.py sdist bdist_wheel
+      - run:
+          name: Deploy to PYPI
+          command: |
+            python3 -m twine upload dist/* -u ${pypi_username} -p ${pypi_password}

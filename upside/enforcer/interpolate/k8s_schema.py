@@ -4,14 +4,33 @@ from collections import ChainMap as _ChainMap
 from copy import deepcopy
 from pathlib import Path
 from string import Template
+
 from colorama import init, Fore
 from ruamel.yaml import YAML
-from upside.enforcer.util.base64 import is_base64
+
 from .util import lookup_secrets
+
 init(autoreset=True)
 
+'''
+Mutates the secret template to only sync keys that exist in parameter store in the format `/secret_dir/secret_name`.
+e.g
+Secret Template
+   - data
+      - A
+      - B
+      - C
+Parameter Store
+    - A
+    - C
+Mutated Template to be applied
+    - data
+        - A
+        - C
+'''
 
-class KubernetesSecretTemplate(Template):
+
+class K8s(Template):
     delimiter = '$'
     pattern = r"""
     \$\(\((?:
@@ -42,8 +61,7 @@ class KubernetesSecretTemplate(Template):
             secret = mo.group('secret')
             secret_base64 = mo.group('secret_base64')
             if secret is not None:
-                if is_base64(secret, str(mapping[secret])):
-                    return str(mapping[secret])
+                return str(mapping[secret])
             if secret_base64 is not None:
                 utf8_encoded = str(mapping[secret_base64]).encode('utf-8')
                 base64_encoded = base64.b64encode(utf8_encoded)
@@ -81,25 +99,7 @@ def interpolate_secrets_template(client, template_path, secret_dir: str = None):
             secret_dir = path.name.split('.')[0]
 
     yaml = YAML()
-    '''
-    Accepts secrets of the format:
-    - /secret_dir/secret_name
-    
-    Mutates the secret template to only sync keys that exist in parameter store per environment
-    e.g
-    Secret Template
-       - data
-          - A
-          - B
-          - C 
-    Parameter Store
-        - A
-        - C
-    Mutated Template to be applied
-        - data
-            - A
-            - C
-    '''
+
     template = yaml.load(file.read())
 
     secrets_store = lookup_secrets(client, secret_dir)
@@ -108,7 +108,7 @@ def interpolate_secrets_template(client, template_path, secret_dir: str = None):
 
     dump_stream = io.StringIO()
     yaml.dump(sanitized_template, dump_stream)
-    secret_tmpl = KubernetesSecretTemplate(dump_stream.getvalue())
+    secret_tmpl = K8s(dump_stream.getvalue())
 
     try:
         return secret_tmpl.substitute(secrets_store[secret_dir])
