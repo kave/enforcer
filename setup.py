@@ -8,7 +8,7 @@ INSTALL_REQUIRES = [
     'click==7.0',
     'colorama==0.4.1',
     'tabulate==0.8.3',
-    'ruamel.yaml==0.15.97'
+    'ruamel.yaml==0.16.12'
 ]
 
 TEST_REQUIRES = [
