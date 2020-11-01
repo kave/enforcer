@@ -6,7 +6,7 @@ INSTALL_REQUIRES = [
     'boto3==1.9.176',
     'pyperclip==1.7.0',
     'click==7.0',
-    'colorama==0.4.1',
+    'colorama==0.4.4',
     'tabulate==0.8.3',
     'ruamel.yaml==0.15.97'
 ]
