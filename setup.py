@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 INSTALL_REQUIRES = [
     'python-dotenv>=0.7.1,<0.11.0',
-    'boto3==1.9.176',
+    'boto3==1.16.63',
     'pyperclip==1.7.0',
     'click==7.0',
     'colorama==0.4.1',
